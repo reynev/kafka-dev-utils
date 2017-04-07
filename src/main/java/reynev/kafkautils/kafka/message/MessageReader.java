@@ -1,6 +1,6 @@
-package com.reynev.kafka.message;
+package reynev.kafkautils.kafka.message;
 
-import com.reynev.collections.LimitedSortedSet;
+import reynev.kafkautils.collections.LimitedSortedSet;
 import org.apache.kafka.clients.consumer.Consumer;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
@@ -37,14 +37,13 @@ class MessageReader {
     Iterable<ConsumerRecord<String, String>> readTopRecordsFromTopic(String topic, int amount){
         moveConsumerOffsetOnPartitions(topic, amount);
         ConsumerRecords<String, String> records = readMessages();
-        LimitedSortedSet<ConsumerRecord<String, String>> topRecords = getLatestMessages(amount, records);
-        return topRecords;
+        return getLatestMessages(amount, records);
     }
 
     private LimitedSortedSet<ConsumerRecord<String, String>> getLatestMessages(int amount, ConsumerRecords<String, String> records) {
         LimitedSortedSet<ConsumerRecord<String, String>> topRecords =
                 new LimitedSortedSet(new ConsumerRecordTimeComparator(), amount);
-        records.forEach(record -> topRecords.add(record));
+        records.forEach(topRecords::add);
         return topRecords;
     }
 

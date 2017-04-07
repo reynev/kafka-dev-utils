@@ -1,4 +1,4 @@
-package com.reynev;
+package reynev.kafkautils;
 
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;

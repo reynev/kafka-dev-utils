@@ -2,7 +2,7 @@
 
 ## Use cases
 
-1. Read x messages from topic/partition - DONE
+1. Read x messages from topic/partition
 
 2. Create message on topic - not tested
 

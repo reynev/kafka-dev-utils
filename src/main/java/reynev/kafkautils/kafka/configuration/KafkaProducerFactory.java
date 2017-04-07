@@ -1,4 +1,4 @@
-package com.reynev.infrastructure;
+package reynev.kafkautils.kafka.configuration;
 
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.common.serialization.StringSerializer;

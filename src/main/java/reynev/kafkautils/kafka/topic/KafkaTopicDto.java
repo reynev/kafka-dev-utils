@@ -1,4 +1,4 @@
-package com.reynev.kafka.topic;
+package reynev.kafkautils.kafka.topic;
 
 import lombok.Value;
 
