@@ -1,8 +1,8 @@
-package com.reynev.rest;
+package reynev.kafkautils.rest;
 
 import com.jayway.restassured.http.ContentType;
-import com.reynev.WebApplication;
-import com.reynev.kafka.message.MessageDto;
+import reynev.kafkautils.WebApplication;
+import reynev.kafkautils.kafka.message.MessageDto;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Value;
@@ -24,7 +24,8 @@ public class BasicIntegrationTest {
     public static final String TEST_TOPIC = "test";
     public static final String TEST_MSG_ID = "ID";
     public static final String TEST_MSG_BODY = "Test Body";
-    @Value("${local.server.port}")   // 6
+
+    @Value("${local.server.port}")
     int port;
 
     @Test
@@ -44,7 +45,7 @@ public class BasicIntegrationTest {
         given().
             port(port).
         when().
-            get("/message/topics").
+            get("/topic").
         then().
             statusCode(HttpStatus.OK.value()).
             body("name", hasItem(TEST_TOPIC));
@@ -53,7 +54,7 @@ public class BasicIntegrationTest {
             port(port).
             pathParam("topic", TEST_TOPIC).
         when().
-            get("/message/{topic}").
+            get("/message/{topic}/1").
         then().
             statusCode(HttpStatus.OK.value()).
             body("id", hasItem(TEST_MSG_ID)).

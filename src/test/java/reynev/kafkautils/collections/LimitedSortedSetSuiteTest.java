@@ -1,4 +1,4 @@
-package com.reynev.collections;
+package reynev.kafkautils.collections;
 
 import com.google.common.collect.testing.CollectionTestSuiteBuilder;
 import com.google.common.collect.testing.TestStringCollectionGenerator;
@@ -9,12 +9,7 @@ import junit.framework.TestSuite;
 import org.junit.runner.RunWith;
 import org.junit.runners.AllTests;
 
-import java.util.Arrays;
 import java.util.Collection;
-import java.util.Comparator;
-import java.util.List;
-
-import static org.assertj.core.api.Assertions.assertThat;
 
 /**
  * Created by Marcin Piłat on 3/23/17.
@@ -24,7 +19,7 @@ public class LimitedSortedSetSuiteTest {
 
     public static Test suite() {
         TestSuite suite =
-                new TestSuite("com.reynev.collections.LimitedSortedSetFunctionalTest");
+                new TestSuite("LimitedSortedSetFunctionalTest");
         suite.addTest(testsForLimitedSortedSet());
         return suite;
     }

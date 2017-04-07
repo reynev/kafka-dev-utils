@@ -1,4 +1,4 @@
-package com.reynev.kafka.message.configuration;
+package reynev.kafkautils.kafka.configuration;
 
 import org.apache.kafka.clients.consumer.KafkaConsumer;
 import org.apache.kafka.common.serialization.StringDeserializer;

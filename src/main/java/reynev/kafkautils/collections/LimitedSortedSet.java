@@ -1,4 +1,4 @@
-package com.reynev.collections;
+package reynev.kafkautils.collections;
 
 import java.util.*;
 import java.util.function.Consumer;
