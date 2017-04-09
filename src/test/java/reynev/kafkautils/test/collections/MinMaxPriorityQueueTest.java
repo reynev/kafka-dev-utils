@@ -1,7 +1,9 @@
-package reynev.kafkautils.collections;
+package reynev.kafkautils.test.collections;
 
+import com.google.common.collect.MinMaxPriorityQueue;
 import junitparams.JUnitParamsRunner;
 import junitparams.Parameters;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 
 import java.util.Arrays;
@@ -11,34 +13,36 @@ import java.util.List;
 import static org.assertj.core.api.Assertions.assertThat;
 
 /**
- * Created by Marcin Piłat on 3/23/17.
+ * @author Marcin Piłat.
  */
 @RunWith(JUnitParamsRunner.class)
-public class LimitedSortedSetFunctionalTest {
+public class MinMaxPriorityQueueTest {
 
     public Object[] parametersForTestQueue() {
-        return new Object[]{
-                new Object[]{5, Arrays.asList(), Arrays.asList()},
+       return new Object[]{
                 new Object[]{3, Arrays.asList(1,2,3), Arrays.asList(1,2,3)},
                 new Object[]{3, Arrays.asList(1,2,3,4), Arrays.asList(2,3,4)},
                 new Object[]{3, Arrays.asList(1,2), Arrays.asList(1,2)},
-                new Object[]{3, Arrays.asList(5,1,3,2,4), Arrays.asList(3,4,5)},
-                new Object[]{5, Arrays.asList(Integer.MAX_VALUE, Integer.MIN_VALUE, 0, -1, 1, 100, -100),
-                        Arrays.asList(Integer.MAX_VALUE, 0, -1, 1, 100)}
-
-        };
+                new Object[]{3, Arrays.asList(5,1,3,2,4), Arrays.asList(3,4,5)}
+            };
     }
 
-    @org.junit.Test
+    @Test
     @Parameters
     public void testQueue(int size, List<Integer> elements, List<Integer> expectedElements){
 
         Comparator<Integer> comparator = (m1, m2) -> -Integer.compare(m1, m2);
 
-        LimitedSortedSet<Integer> queue = new LimitedSortedSet(comparator, size);
+        MinMaxPriorityQueue<Integer> queue = MinMaxPriorityQueue
+                .orderedBy( comparator )
+                .maximumSize(size)
+                .create();
 
-        queue.addAll(elements);
+        elements.forEach(e -> queue.add(e));
 
         assertThat(queue).hasSameElementsAs(expectedElements);
+
     }
+
+
 }

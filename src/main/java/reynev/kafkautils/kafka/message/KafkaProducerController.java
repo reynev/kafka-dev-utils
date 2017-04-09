@@ -9,7 +9,7 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 /**
- * Created by Marcin Piłat on 3/21/17.
+ * @author Marcin Piłat.
  */
 @RestController
 @RequestMapping("/message")

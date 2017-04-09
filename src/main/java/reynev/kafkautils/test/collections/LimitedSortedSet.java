@@ -1,4 +1,4 @@
-package reynev.kafkautils.collections;
+package reynev.kafkautils.test.collections;
 
 import java.util.*;
 import java.util.function.Consumer;
@@ -9,7 +9,7 @@ import static com.google.common.base.Preconditions.checkArgument;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
- * Created by Marcin Piłat on 3/23/17.
+ * @author Marcin Piłat.
  *
  * Simple collection class that should have similar functionality to {@link com.google.common.collect.MinMaxPriorityQueue}.
  *

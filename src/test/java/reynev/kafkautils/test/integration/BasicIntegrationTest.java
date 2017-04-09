@@ -1,42 +1,52 @@
-package reynev.kafkautils.rest;
+package reynev.kafkautils.test.integration;
 
 import com.jayway.restassured.http.ContentType;
-import reynev.kafkautils.WebApplication;
-import reynev.kafkautils.kafka.message.MessageDto;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import reynev.kafkautils.WebApplication;
+import reynev.kafkautils.kafka.message.MessageDto;
+import reynev.kafkautils.test.configuration.IntegrationTest;
+
+import java.util.UUID;
 
 import static com.jayway.restassured.RestAssured.given;
 import static org.hamcrest.Matchers.hasItem;
 import static org.springframework.boot.test.context.SpringBootTest.WebEnvironment.RANDOM_PORT;
 
 /**
- * Created by Marcin Piłat on 4/3/17.
+ * Tests that are checking happy path of application functionality.
+ *
+ * For now it requires Kafka on localhost:9092 but hopefully it will change.
+ *
+ * @author Marcin Piłat.
  */
+@Category(IntegrationTest.class)
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringBootTest(classes = WebApplication.class, webEnvironment = RANDOM_PORT)
 public class BasicIntegrationTest {
 
-    public static final String TEST_TOPIC = "test";
-    public static final String TEST_MSG_ID = "ID";
-    public static final String TEST_MSG_BODY = "Test Body";
+    private String randomTestTopic;
+    private static final String TEST_MSG_ID = "ID";
+    private static final String TEST_MSG_BODY = "Test Body";
 
     @Value("${local.server.port}")
-    int port;
+    private int port;
 
     @Test
-    public void testProducer(){
+    public void testCreatingMessagesAndListingTopicsAndListingLastMessage(){
+        randomTestTopic = UUID.randomUUID().toString();
         // @formatter:off
         MessageDto message = new MessageDto(TEST_MSG_ID, TEST_MSG_BODY);
         given().
             contentType(ContentType.JSON).
             port(port).
             body(message).
-            pathParam("topic", TEST_TOPIC).
+            pathParam("topic", randomTestTopic).
         when().
             post("/message/{topic}").
         then().
@@ -48,11 +58,11 @@ public class BasicIntegrationTest {
             get("/topic").
         then().
             statusCode(HttpStatus.OK.value()).
-            body("name", hasItem(TEST_TOPIC));
+            body("name", hasItem(randomTestTopic));
 
         given().
             port(port).
-            pathParam("topic", TEST_TOPIC).
+            pathParam("topic", randomTestTopic).
         when().
             get("/message/{topic}/1").
         then().
@@ -60,7 +70,5 @@ public class BasicIntegrationTest {
             body("id", hasItem(TEST_MSG_ID)).
             body("body", hasItem(TEST_MSG_BODY));
         // @formatter:on
-
     }
-
 }

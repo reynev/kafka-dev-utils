@@ -12,7 +12,7 @@ import java.util.Properties;
 import java.util.UUID;
 
 /**
- * Created by Marcin Piłat on 3/21/17.
+ * @author Marcin Piłat.
  */
 @Configuration
 class KafkaConsumerFactory {
