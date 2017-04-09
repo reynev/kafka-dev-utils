@@ -3,7 +3,7 @@ package reynev.kafkautils.kafka.topic;
 import lombok.Value;
 
 /**
- * Created by Marcin Piłat on 4/5/17.
+ * @author Marcin Piłat.
  */
 @Value
 class KafkaTopicDto {

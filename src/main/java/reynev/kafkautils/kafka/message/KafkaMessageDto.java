@@ -3,12 +3,11 @@ package reynev.kafkautils.kafka.message;
 import lombok.AllArgsConstructor;
 import lombok.Value;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
-import org.joda.time.DateTime;
 
 import java.util.Date;
 
 /**
- * Created by Marcin Piłat on 3/22/17.
+ * @author Marcin Piłat.
  */
 @Value
 @AllArgsConstructor

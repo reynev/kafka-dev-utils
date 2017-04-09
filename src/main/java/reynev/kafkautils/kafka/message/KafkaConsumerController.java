@@ -7,10 +7,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
- * Created by Marcin Piłat on 3/21/17.
+ * @author Marcin Piłat.
  */
 @RestController
 @RequestMapping("/message")
@@ -20,7 +21,8 @@ class KafkaConsumerController {
     private MessageReader messageReader;
 
     @RequestMapping(value = "/{topic}/{amount}", method = RequestMethod.GET)
-    private List<KafkaMessageDto> getTopMessages(@PathVariable String topic, @PathVariable Integer amount){
+    private List<KafkaMessageDto> getTopMessages(@PathVariable String topic,
+                                                 @PathVariable Integer amount){
         Iterable< ConsumerRecord<String, String> > latestRecords =
                 messageReader.readTopRecordsFromTopic(topic, amount);
         List<KafkaMessageDto> latestMessages = new ArrayList<>(amount);

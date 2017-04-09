@@ -5,13 +5,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.context.annotation.RequestScope;
 
 import java.util.Collection;
 import java.util.stream.Collectors;
 
 /**
- * Created by Marcin Piłat on 4/6/17.
+ * @author Marcin Piłat.
  */
 @RestController
 @RequestMapping("/topic")

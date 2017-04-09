@@ -1,22 +1,29 @@
 package reynev.kafkautils.kafka.message;
 
-import reynev.kafkautils.collections.LimitedSortedSet;
 import org.apache.kafka.clients.consumer.Consumer;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
 import org.apache.kafka.common.TopicPartition;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import org.springframework.web.context.annotation.RequestScope;
+import reynev.kafkautils.kafka.message.exception.IncorrectAmountException;
+import reynev.kafkautils.kafka.message.exception.TopicNotFoundException;
+import reynev.kafkautils.test.collections.LimitedSortedSet;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
+import static java.lang.Math.max;
+
 /**
- * Created by Marcin Piłat on 4/5/17.
+ * @author Marcin Piłat.
  */
 @RequestScope
-@Component
+@Service
 class MessageReader {
 
     private Consumer<String, String> kafkaConsumer;
@@ -35,22 +42,25 @@ class MessageReader {
      * @return Last messages
      */
     Iterable<ConsumerRecord<String, String>> readTopRecordsFromTopic(String topic, int amount){
-        moveConsumerOffsetOnPartitions(topic, amount);
-        ConsumerRecords<String, String> records = readMessages();
+        verifyTopic(topic);
+        validateAmount(amount);
+
+        ConsumerRecords<String, String> records = readMessages(topic, amount);
         return getLatestMessages(amount, records);
+    }
+
+    private ConsumerRecords<String, String> readMessages(String topic, int amount) {
+        moveConsumerOffsetOnPartitions(topic, amount);
+        ConsumerRecords<String, String> records = kafkaConsumer.poll(5000);
+        kafkaConsumer.close();
+        return records;
     }
 
     private LimitedSortedSet<ConsumerRecord<String, String>> getLatestMessages(int amount, ConsumerRecords<String, String> records) {
         LimitedSortedSet<ConsumerRecord<String, String>> topRecords =
-                new LimitedSortedSet(new ConsumerRecordTimeComparator(), amount);
+                new LimitedSortedSet<>(Comparator.comparingLong(ConsumerRecord::timestamp), amount);
         records.forEach(topRecords::add);
         return topRecords;
-    }
-
-    private ConsumerRecords<String, String> readMessages() {
-        ConsumerRecords<String, String> records = kafkaConsumer.poll(1000);
-        kafkaConsumer.close();
-        return records;
     }
 
     private void moveConsumerOffsetOnPartitions(String topic, int amount) {
@@ -58,7 +68,8 @@ class MessageReader {
         Set<TopicPartition> partitions = waitForAssignment();
         Map<TopicPartition, Long> partitionsOffset = kafkaConsumer.endOffsets(partitions);
 
-        partitionsOffset.forEach( (partition, offset) -> kafkaConsumer.seek(partition, offset - amount));
+        partitionsOffset.forEach(
+                (partition, offset) -> kafkaConsumer.seek(partition, max(offset - amount,0)));
     }
 
     private Set<TopicPartition> waitForAssignment() {
@@ -66,7 +77,7 @@ class MessageReader {
         Set<TopicPartition> assignment;
         do {
             try {
-                TimeUnit.SECONDS.sleep(1);
+                TimeUnit.MILLISECONDS.sleep(500);
             } catch (InterruptedException e) {
                 throw new InternalError(e);
             }
@@ -75,4 +86,21 @@ class MessageReader {
         return assignment;
     }
 
+    @Override
+    public String toString() {
+        return "MessageReader";
+    }
+
+    private void validateAmount(int amount) {
+        if(amount < 1){
+            throw new IncorrectAmountException();
+        }
+    }
+
+    private void verifyTopic(String topic) {
+        boolean topicExists = kafkaConsumer.listTopics().containsKey(topic);
+        if(!topicExists){
+            throw new TopicNotFoundException();
+        }
+    }
 }

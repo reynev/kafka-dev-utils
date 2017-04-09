@@ -1,4 +1,4 @@
-package reynev.kafkautils.collections;
+package reynev.kafkautils.test.collections;
 
 import com.google.common.collect.testing.CollectionTestSuiteBuilder;
 import com.google.common.collect.testing.TestStringCollectionGenerator;
@@ -12,7 +12,7 @@ import org.junit.runners.AllTests;
 import java.util.Collection;
 
 /**
- * Created by Marcin Piłat on 3/23/17.
+ * @author Marcin Piłat.
  */
 @RunWith(AllTests.class)
 public class LimitedSortedSetSuiteTest {

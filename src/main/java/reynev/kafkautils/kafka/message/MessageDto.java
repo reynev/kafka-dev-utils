@@ -3,7 +3,7 @@ package reynev.kafkautils.kafka.message;
 import lombok.Value;
 
 /**
- * Created by Marcin Piłat on 3/21/17.
+ * @author Marcin Piłat.
  */
 @Value
 public class MessageDto {

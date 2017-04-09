@@ -1,15 +1,22 @@
-# About
+# kafka-dev-utils
+
+Simple REST server to simplify developing application that uses Kafka.
 
 ## Use cases
 
-1. Read x messages from topic/partition
+- [x] Create message on topic
+- [x] Read x latest messages from topic
+- [ ] List topics
+- [ ] Read x latest messages from partition
+- [ ] List partition for topics
+- [ ] List consumer groups and consumers?
+- [ ] Show Metrics (KafkaConsumer.metrics() ??)
 
-2. Create message on topic - not tested
+## How to run it?
 
-3. List topics
-
-4. List partition for topics
-
-5. List consumer groups and consumers?
-
-6. Show Metrics (KafkaConsumer.metrics() ??)
+* Kafka 0.10.1.0  - not tested with other versions
+ * Ready to use docker container: [spotify/kafka/](https://hub.docker.com/r/spotify/kafka)
+* Run application
+ * Build poject `mvn clean install`
+ * Run `java -jar target/kafka-dev-utils-1.0.0-SNAPSHOT.jar`
+* Open swagger-ui http://localhost:8080/swagger-ui.html#
