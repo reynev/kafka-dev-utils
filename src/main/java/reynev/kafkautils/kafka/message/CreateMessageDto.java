@@ -6,7 +6,7 @@ import lombok.Value;
  * @author Marcin Piłat.
  */
 @Value
-public class MessageDto {
+public class CreateMessageDto {
 
     private String id;
 
