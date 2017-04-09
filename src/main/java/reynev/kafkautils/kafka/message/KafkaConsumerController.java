@@ -17,8 +17,15 @@ import java.util.List;
 @RequestMapping("/message")
 class KafkaConsumerController {
 
+    public static final int DEFAULT_MESSAGES_AMOUNT = 10;
+
     @Autowired
     private MessageReader messageReader;
+
+    @RequestMapping(value = "/{topic}", method = RequestMethod.GET)
+    private List<KafkaMessageDto> getTopMessagesWithDefaultAmount(@PathVariable String topic){
+        return getTopMessages(topic, DEFAULT_MESSAGES_AMOUNT);
+    }
 
     @RequestMapping(value = "/{topic}/{amount}", method = RequestMethod.GET)
     private List<KafkaMessageDto> getTopMessages(@PathVariable String topic,

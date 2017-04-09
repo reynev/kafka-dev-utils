@@ -1,12 +1,12 @@
 package reynev.kafkautils.kafka.message;
 
-import org.apache.kafka.clients.producer.KafkaProducer;
-import org.apache.kafka.clients.producer.ProducerRecord;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
  * @author Marcin Piłat.
@@ -15,17 +15,11 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/message")
 class KafkaProducerController {
 
-    Logger logger = LoggerFactory.getLogger(KafkaProducerController.class);
-
     @Autowired
-    private KafkaProducer<String, String> kafkaProducer;
+    private MessageWriter messageWriter;
 
     @RequestMapping(value = "/{topic}", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
-    String produceMessage(@PathVariable String topic, @RequestBody MessageDto messageDto) {
-        ProducerRecord record = new ProducerRecord(topic, messageDto.getId(), messageDto.getBody());
-        kafkaProducer.send(record);
-        kafkaProducer.flush();
-        logger.info("Message sent: " + messageDto.getBody());
-        return String.format("MessageDto %s sent to topic %s.", messageDto, topic);
+    void produceMessage(@PathVariable String topic, @RequestBody(required = false) CreateMessageDto createMessageDto) {
+        messageWriter.writeMessage(topic, createMessageDto);
     }
 }

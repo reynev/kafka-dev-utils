@@ -9,7 +9,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import reynev.kafkautils.WebApplication;
-import reynev.kafkautils.kafka.message.MessageDto;
+import reynev.kafkautils.kafka.message.CreateMessageDto;
 import reynev.kafkautils.test.configuration.IntegrationTest;
 
 import java.util.UUID;
@@ -41,7 +41,7 @@ public class BasicIntegrationTest {
     public void testCreatingMessagesAndListingTopicsAndListingLastMessage(){
         randomTestTopic = UUID.randomUUID().toString();
         // @formatter:off
-        MessageDto message = new MessageDto(TEST_MSG_ID, TEST_MSG_BODY);
+        CreateMessageDto message = new CreateMessageDto(TEST_MSG_ID, TEST_MSG_BODY);
         given().
             contentType(ContentType.JSON).
             port(port).

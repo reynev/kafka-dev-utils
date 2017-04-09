@@ -7,6 +7,7 @@ Simple REST server to simplify developing application that uses Kafka.
 - [x] Create message on topic
 - [x] Read x latest messages from topic
 - [ ] List topics
+- [ ] Create message on partition
 - [ ] Read x latest messages from partition
 - [ ] List partition for topics
 - [ ] List consumer groups and consumers?
