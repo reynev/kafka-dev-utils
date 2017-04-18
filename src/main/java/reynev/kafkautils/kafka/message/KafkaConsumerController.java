@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+import reynev.kafkautils.kafka.common.TopicValidator;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,8 +20,14 @@ class KafkaConsumerController {
 
     public static final int DEFAULT_MESSAGES_AMOUNT = 10;
 
-    @Autowired
     private MessageReader messageReader;
+
+    private TopicValidator topicValidator;
+
+    KafkaConsumerController(@Autowired MessageReader messageReader, @Autowired TopicValidator topicValidator) {
+        this.messageReader = messageReader;
+        this.topicValidator = topicValidator;
+    }
 
     @RequestMapping(value = "/{topic}", method = RequestMethod.GET)
     private List<KafkaMessageDto> getTopMessagesWithDefaultAmount(@PathVariable String topic){
@@ -30,6 +37,7 @@ class KafkaConsumerController {
     @RequestMapping(value = "/{topic}/{amount}", method = RequestMethod.GET)
     private List<KafkaMessageDto> getTopMessages(@PathVariable String topic,
                                                  @PathVariable Integer amount){
+        topicValidator.validateTopic(topic);
         Iterable< ConsumerRecord<String, String> > latestRecords =
                 messageReader.readTopRecordsFromTopic(topic, amount);
         List<KafkaMessageDto> latestMessages = new ArrayList<>(amount);

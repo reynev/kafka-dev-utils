@@ -7,9 +7,8 @@ import org.apache.kafka.common.TopicPartition;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.annotation.RequestScope;
-import reynev.kafkautils.kafka.common.TopicValidator;
 import reynev.kafkautils.kafka.message.exception.IncorrectAmountException;
-import reynev.kafkautils.test.collections.LimitedSortedSet;
+import reynev.kafkautils.collections.LimitedSortedSet;
 
 import java.util.Map;
 import java.util.Set;
@@ -30,11 +29,8 @@ class MessageReader {
 
     private Consumer<String, String> kafkaConsumer;
 
-    private TopicValidator topicValidator;
-
-    MessageReader(@Autowired Consumer<String, String> kafkaConsumer, @Autowired TopicValidator topicValidator) {
+    MessageReader(@Autowired Consumer<String, String> kafkaConsumer) {
         this.kafkaConsumer = kafkaConsumer;
-        this.topicValidator = topicValidator;
     }
 
     /**
@@ -47,7 +43,6 @@ class MessageReader {
      * @return Last messages
      */
     Iterable<ConsumerRecord<String, String>> readTopRecordsFromTopic(String topic, int amount){
-        topicValidator.validateTopic(topic);
         validateAmount(amount);
 
         ConsumerRecords<String, String> records = readMessages(topic, amount);

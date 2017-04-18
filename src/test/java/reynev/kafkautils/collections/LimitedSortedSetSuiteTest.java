@@ -1,4 +1,4 @@
-package reynev.kafkautils.test.collections;
+package reynev.kafkautils.collections;
 
 import com.google.common.collect.testing.CollectionTestSuiteBuilder;
 import com.google.common.collect.testing.TestStringCollectionGenerator;

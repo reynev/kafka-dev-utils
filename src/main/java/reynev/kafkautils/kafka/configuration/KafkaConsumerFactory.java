@@ -37,7 +37,7 @@ class KafkaConsumerFactory {
         props.put("key.deserializer", StringDeserializer.class.getCanonicalName());
         props.put("value.deserializer", StringDeserializer.class.getCanonicalName());
 
-        KafkaConsumer consumer = new KafkaConsumer<>(props);
+        KafkaConsumer<String, String> consumer = new KafkaConsumer<>(props);
 
         logger.info("Consumer created in group: {}", consumerGroup);
 

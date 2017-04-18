@@ -1,6 +1,7 @@
 package reynev.kafkautils.test.integration;
 
 import com.jayway.restassured.http.ContentType;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
@@ -10,7 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import reynev.kafkautils.WebApplication;
 import reynev.kafkautils.kafka.message.CreateMessageDto;
-import reynev.kafkautils.test.configuration.IntegrationTest;
+import reynev.kafkautils.test.configuration.category.IntegrationTest;
 
 import java.util.UUID;
 
@@ -37,9 +38,13 @@ public class BasicIntegrationTest {
     @Value("${local.server.port}")
     private int port;
 
+    @Before
+    public void createRandomDataForTest(){
+        randomTestTopic = UUID.randomUUID().toString();
+    }
+
     @Test
     public void testCreatingMessagesAndListingTopicsAndListingLastMessage(){
-        randomTestTopic = UUID.randomUUID().toString();
         // @formatter:off
         CreateMessageDto message = new CreateMessageDto(TEST_MSG_ID, TEST_MSG_BODY);
         given().

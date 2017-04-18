@@ -11,10 +11,10 @@ import java.util.Properties;
  * Created by reynev on 3/21/17.
  */
 @Configuration
-public class KafkaProducerFactory {
+class KafkaProducerFactory {
 
     @Bean
-    public KafkaProducer<String, String> createProducer(){
+    KafkaProducer<String, String> createProducer(){
         Properties props = new Properties();
         props.put("bootstrap.servers", "localhost:9092");
         props.put("acks", "all");
