@@ -1,4 +1,4 @@
-package reynev.kafkautils.test.configuration;
+package reynev.kafkautils.test.configuration.category;
 
 /**
  * Marker interface for Integration Tests category.
