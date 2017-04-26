@@ -1,6 +1,5 @@
 package reynev.kafkautils.kafka.topic;
 
-import org.apache.kafka.clients.consumer.KafkaConsumer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -16,12 +15,15 @@ import java.util.stream.Collectors;
 @RequestMapping("/topic")
 class KafkaTopicsController {
 
-    @Autowired
-    private KafkaConsumer<String, String> kafkaConsumer;
+    private TopicLister topicLister;
+
+    public KafkaTopicsController(@Autowired TopicLister topicLister) {
+        this.topicLister = topicLister;
+    }
 
     @RequestMapping(value = "", method = RequestMethod.GET)
     private Collection<KafkaTopicDto> listTopics(){
-        return kafkaConsumer.listTopics().entrySet().stream().
+        return topicLister.listTopics().entrySet().stream().
                 map(e -> new KafkaTopicDto(e.getKey())).collect(Collectors.toList());
     }
 }

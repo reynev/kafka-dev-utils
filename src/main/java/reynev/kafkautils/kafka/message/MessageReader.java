@@ -1,5 +1,6 @@
 package reynev.kafkautils.kafka.message;
 
+import com.google.common.collect.MinMaxPriorityQueue;
 import org.apache.kafka.clients.consumer.Consumer;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.consumer.ConsumerRecords;
@@ -8,15 +9,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.context.annotation.RequestScope;
 import reynev.kafkautils.kafka.message.exception.IncorrectAmountException;
-import reynev.kafkautils.collections.LimitedSortedSet;
 
+import java.util.Collection;
+import java.util.Comparator;
 import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
 
 import static java.lang.Math.max;
 import static java.util.Collections.singletonList;
-import static java.util.Comparator.comparingLong;
 
 /**
  * Service for reading messages from Kafka on given topic.
@@ -56,9 +57,11 @@ class MessageReader {
         return records;
     }
 
-    private LimitedSortedSet<ConsumerRecord<String, String>> getLatestMessages(int amount, ConsumerRecords<String, String> records) {
-        LimitedSortedSet<ConsumerRecord<String, String>> topRecords =
-                new LimitedSortedSet<>(comparingLong(ConsumerRecord::timestamp), amount);
+    private Collection<ConsumerRecord<String, String>> getLatestMessages(int amount, ConsumerRecords<String, String> records) {
+        MinMaxPriorityQueue<ConsumerRecord<String, String>> topRecords = MinMaxPriorityQueue
+                .orderedBy(Comparator.<ConsumerRecord<String, String>>comparingLong(ConsumerRecord::timestamp))
+                .maximumSize(amount)
+                .create();
         records.forEach(topRecords::add);
         return topRecords;
     }
