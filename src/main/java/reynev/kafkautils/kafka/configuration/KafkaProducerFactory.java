@@ -2,8 +2,10 @@ package reynev.kafkautils.kafka.configuration;
 
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.common.serialization.StringSerializer;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import reynev.kafkautils.kafka.common.KafkaConfiguration;
 
 import java.util.Properties;
 
@@ -13,10 +15,13 @@ import java.util.Properties;
 @Configuration
 class KafkaProducerFactory {
 
+    @Autowired
+    private KafkaConfiguration kafkaConfiguration;
+
     @Bean
     KafkaProducer<String, String> createProducer(){
         Properties props = new Properties();
-        props.put("bootstrap.servers", "localhost:9092");
+        props.put("bootstrap.servers", kafkaConfiguration.getBootstrapServers());
         props.put("acks", "all");
         props.put("retries", 0);
         props.put("batch.size", 16384);
