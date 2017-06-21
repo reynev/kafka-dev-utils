@@ -18,7 +18,7 @@ import java.util.List;
 @RequestMapping("/message")
 class KafkaConsumerController {
 
-    public static final int DEFAULT_MESSAGES_AMOUNT = 10;
+    static final int DEFAULT_MESSAGES_AMOUNT = 10;
 
     private MessageReader messageReader;
 

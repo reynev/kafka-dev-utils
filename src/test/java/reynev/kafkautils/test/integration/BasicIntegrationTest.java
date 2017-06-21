@@ -2,6 +2,8 @@ package reynev.kafkautils.test.integration;
 
 import com.jayway.restassured.RestAssured;
 import com.jayway.restassured.http.ContentType;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
@@ -11,7 +13,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.HttpStatus;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import reynev.kafkautils.WebApplication;
-import reynev.kafkautils.kafka.message.CreateMessageDto;
 import reynev.kafkautils.test.configuration.category.IntegrationTest;
 
 import java.util.UUID;
@@ -45,13 +46,15 @@ public class BasicIntegrationTest {
     }
 
     @Test
-    public void testCreatingMessagesAndListingTopicsAndListingLastMessage(){
+    public void testCreatingMessagesAndListingTopicsAndListingLastMessage() throws JSONException {
         // @formatter:off
         RestAssured.port = port;
-        CreateMessageDto message = new CreateMessageDto(TEST_MSG_ID, TEST_MSG_BODY);
+        JSONObject message = new JSONObject();
+        message.put("id", TEST_MSG_ID);
+        message.put("body", TEST_MSG_BODY);
         given().
             contentType(ContentType.JSON).
-            body(message).
+            body(message.toString()).
             pathParam("topic", randomTestTopic).
         when().
             post("/message/{topic}").

@@ -41,8 +41,6 @@ public class MinMaxPriorityQueueTest {
         elements.forEach(e -> queue.add(e));
 
         assertThat(queue).hasSameElementsAs(expectedElements);
-
     }
-
 
 }

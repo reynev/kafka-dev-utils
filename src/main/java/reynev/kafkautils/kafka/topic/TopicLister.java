@@ -14,15 +14,15 @@ import java.util.Map;
  * @author Marcin Piłat
  */
 @Component
-public class TopicLister {
+class TopicLister {
 
     private Consumer<String, String> kafkaConsumer;
 
-    public TopicLister(@Autowired Consumer<String, String> kafkaConsumer) {
+    TopicLister(@Autowired Consumer<String, String> kafkaConsumer) {
         this.kafkaConsumer = kafkaConsumer;
     }
 
-    public Map<String, List<PartitionInfo>> listTopics(){
+    Map<String, List<PartitionInfo>> listTopics(){
         return kafkaConsumer.listTopics();
     }
 }

@@ -15,8 +15,11 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/message")
 class KafkaProducerController {
 
-    @Autowired
     private MessageWriter messageWriter;
+
+    KafkaProducerController(@Autowired MessageWriter messageWriter) {
+        this.messageWriter = messageWriter;
+    }
 
     @RequestMapping(value = "/{topic}", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
     void produceMessage(@PathVariable String topic, @RequestBody(required = false) CreateMessageDto createMessageDto) {
