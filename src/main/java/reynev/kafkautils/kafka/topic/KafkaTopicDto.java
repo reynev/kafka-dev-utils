@@ -1,12 +1,16 @@
 package reynev.kafkautils.kafka.topic;
 
-import lombok.Value;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * @author Marcin Piłat.
  */
-@Value
+@AllArgsConstructor
 class KafkaTopicDto {
 
+    @Getter
+    @Setter
     private String name;
 }

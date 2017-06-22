@@ -142,7 +142,7 @@ public class BasicIntegrationTest {
     public void whenReadMessageFromTopic_givenOneMessageIsInTopic_thenReturn200AndMessage() throws JSONException, TimeoutException, InterruptedException {
         //given
         kafkaUnit.createTopic(randomTestTopic);
-        KeyedMessage<String, String> message = new KeyedMessage<String, String>(randomTestTopic, TEST_MSG_ID, TEST_MSG_BODY);
+        KeyedMessage<String, String> message = new KeyedMessage<>(randomTestTopic, TEST_MSG_ID, TEST_MSG_BODY);
         kafkaUnit.sendMessages(message);
 
         // @formatter:off
@@ -156,6 +156,33 @@ public class BasicIntegrationTest {
                     "[0].id", equalTo(TEST_MSG_ID),
                     "[0].body", equalTo(TEST_MSG_BODY));
         // @formatter:on
+    }
 
+    @Test
+    public void whenReadMessageFromTopic_givenTopicDoesNotExists_thenReturn404() throws JSONException, TimeoutException, InterruptedException {
+        // @formatter:off
+        given().
+            pathParam("topic", randomTestTopic).
+        when().
+            get("/message/{topic}").
+        then().
+            statusCode(HttpStatus.NOT_FOUND.value());
+        // @formatter:on
+    }
+
+    @Test
+    public void whenReadMessageFromTopicWithIncorrectAmount_thenReturn400() throws JSONException, TimeoutException, InterruptedException {
+        kafkaUnit.createTopic(randomTestTopic);
+        KeyedMessage<String, String> message = new KeyedMessage<>(randomTestTopic, TEST_MSG_ID, TEST_MSG_BODY);
+        kafkaUnit.sendMessages(message);
+
+        // @formatter:off
+        given().
+            pathParam("topic", randomTestTopic).
+        when().
+            get("/message/{topic}/-1").
+        then().
+            statusCode(HttpStatus.BAD_REQUEST.value());
+        // @formatter:on
     }
 }

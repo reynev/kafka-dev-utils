@@ -1,14 +1,18 @@
 package reynev.kafkautils.kafka.message;
 
-import lombok.Value;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * @author Marcin Piłat.
  */
-@Value
 class CreateMessageDto {
 
+    @Getter
+    @Setter
     private String id;
 
+    @Getter
+    @Setter
     private String body;
 }

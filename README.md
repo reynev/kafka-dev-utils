@@ -1,5 +1,8 @@
 # kafka-dev-utils
 
+[![Build Status](https://travis-ci.org/reynev/kafka-dev-utils.svg?branch=master)](https://travis-ci.org/reynev/kafka-dev-utils)
+[![Coverage Status](https://coveralls.io/repos/github/reynev/kafka-dev-utils/badge.svg?branch=master)](https://coveralls.io/github/reynev/kafka-dev-utils?branch=master)
+
 Simple REST server to simplify developing application that uses Kafka.
 
 ## Use cases
